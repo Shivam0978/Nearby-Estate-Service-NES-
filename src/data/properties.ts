@@ -77,5 +77,83 @@ export const sampleProperties = [
     type: 'Apartment',
     status: 'For Rent',
     features: ['Balcony', 'Security', 'Parking']
+  },
+  {
+    id: '7',
+    title: 'Luxury Villa with Ocean View',
+    price: '$2,500,000',
+    location: 'Coastal Hills, Oceanside',
+    bedrooms: 6,
+    bathrooms: 5,
+    sqft: 4500,
+    image: 'https://images.unsplash.com/photo-1459767129954-1b1c1f9b9ace?auto=format&fit=crop&w=800&q=80',
+    type: 'Villa',
+    status: 'For Sale',
+    features: ['Ocean View', 'Pool', 'Wine Cellar', 'Private Beach', 'Garage', 'Garden']
+  },
+  {
+    id: '8',
+    title: 'Cozy Cottage in Countryside',
+    price: '$450,000',
+    location: 'Meadowbrook, Rural County',
+    bedrooms: 2,
+    bathrooms: 1,
+    sqft: 1100,
+    image: 'https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=800&q=80',
+    type: 'Cottage',
+    status: 'For Sale',
+    features: ['Garden', 'Fireplace', 'Original Features', 'Quiet Location']
+  },
+  {
+    id: '9',
+    title: 'Modern Penthouse Suite',
+    price: '$1,850,000',
+    location: 'Financial District, Metro City',
+    bedrooms: 3,
+    bathrooms: 3,
+    sqft: 2000,
+    image: 'https://images.unsplash.com/photo-1460574283810-2aab119d8511?auto=format&fit=crop&w=800&q=80',
+    type: 'Penthouse',
+    status: 'For Sale',
+    features: ['City Views', 'Rooftop Terrace', 'Concierge', 'Gym', 'Security']
+  },
+  {
+    id: '10',
+    title: 'Historic Mansion Estate',
+    price: '$3,200,000',
+    location: 'Heritage Hills, Prestigious Area',
+    bedrooms: 8,
+    bathrooms: 6,
+    sqft: 6000,
+    image: 'https://images.unsplash.com/photo-1466442929976-97f336a657be?auto=format&fit=crop&w=800&q=80',
+    type: 'Mansion',
+    status: 'For Sale',
+    features: ['Historic Value', 'Library', 'Ballroom', 'Stables', 'Extensive Grounds', 'Wine Cellar']
+  },
+  {
+    id: '11',
+    title: 'Sustainable Eco-Home',
+    price: '$680,000',
+    location: 'Green Valley, Eco Community',
+    bedrooms: 3,
+    bathrooms: 2,
+    sqft: 1800,
+    image: 'https://images.unsplash.com/photo-1459767129954-1b1c1f9b9ace?auto=format&fit=crop&w=800&q=80',
+    type: 'Eco-Home',
+    status: 'For Sale',
+    features: ['Solar Panels', 'Rainwater Collection', 'Energy Efficient', 'Organic Garden']
+  },
+  {
+    id: '12',
+    title: 'Lakefront Cabin Retreat',
+    price: '$520,000',
+    location: 'Pine Lake, Mountain Region',
+    bedrooms: 2,
+    bathrooms: 2,
+    sqft: 1300,
+    image: 'https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=800&q=80',
+    type: 'Cabin',
+    status: 'For Sale',
+    features: ['Lake Access', 'Deck', 'Fireplace', 'Mountain Views', 'Boat Dock']
   }
 ];

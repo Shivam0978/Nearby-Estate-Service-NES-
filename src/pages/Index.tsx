@@ -60,11 +60,33 @@ const Index = () => {
     <div className="min-h-screen bg-gray-50">
       <Header />
       
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Hero Section with Enhanced Background */}
+      <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white py-20 overflow-hidden">
+        {/* Background Houses Pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-10 left-10 w-32 h-24 bg-white/20 rounded-lg transform rotate-12"></div>
+          <div className="absolute top-20 right-20 w-40 h-30 bg-white/15 rounded-lg transform -rotate-6"></div>
+          <div className="absolute bottom-20 left-1/4 w-36 h-28 bg-white/20 rounded-lg transform rotate-3"></div>
+          <div className="absolute bottom-10 right-1/3 w-28 h-20 bg-white/15 rounded-lg transform -rotate-12"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-36 bg-white/10 rounded-lg rotate-45"></div>
+        </div>
+        
+        {/* Floating House Icons */}
+        <div className="absolute inset-0">
+          <div className="absolute top-16 left-1/4 animate-pulse">
+            <div className="w-8 h-8 bg-white/30 rounded-sm transform rotate-45"></div>
+          </div>
+          <div className="absolute bottom-32 right-1/4 animate-pulse delay-1000">
+            <div className="w-6 h-6 bg-white/25 rounded-sm transform rotate-12"></div>
+          </div>
+          <div className="absolute top-32 right-1/3 animate-pulse delay-500">
+            <div className="w-10 h-10 bg-white/20 rounded-sm transform -rotate-12"></div>
+          </div>
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent">
               Find Your Dream Home
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-blue-100">
@@ -72,7 +94,7 @@ const Index = () => {
             </p>
             
             {/* Quick Search */}
-            <div className="max-w-4xl mx-auto bg-white rounded-lg p-6 shadow-xl">
+            <div className="max-w-4xl mx-auto bg-white/95 backdrop-blur-sm rounded-xl p-6 shadow-2xl border border-white/20">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div className="md:col-span-2">
                   <input
@@ -88,7 +110,7 @@ const Index = () => {
                   <option>Condo</option>
                   <option>Townhouse</option>
                 </select>
-                <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
+                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 shadow-lg">
                   <Search className="h-5 w-5 mr-2" />
                   Search
                 </Button>
