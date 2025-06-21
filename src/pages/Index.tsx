@@ -4,20 +4,28 @@ import Header from '@/components/Header';
 import PropertyCard from '@/components/PropertyCard';
 import FilterSidebar from '@/components/FilterSidebar';
 import PropertyModal from '@/components/PropertyModal';
+import AuthModal from '@/components/AuthModal';
+import ListPropertyForm from '@/components/ListPropertyForm';
 import { Button } from '@/components/ui/button';
-import { Search, MapPin, TrendingUp, Award } from 'lucide-react';
+import { Search, MapPin, TrendingUp, Award, Home, Plus, User } from 'lucide-react';
 import { sampleProperties } from '@/data/properties';
 
 const Index = () => {
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showListPropertyForm, setShowListPropertyForm] = useState(false);
   const [filters, setFilters] = useState({
-    priceRange: [0, 2000000],
+    priceRange: [0, 5000000],
     propertyType: 'all',
     bedrooms: 'any',
     bathrooms: 'any',
     features: []
   });
+
+  const isAuthenticated = () => {
+    return localStorage.getItem('isAuthenticated') === 'true';
+  };
 
   const filteredProperties = useMemo(() => {
     return sampleProperties.filter(property => {
@@ -48,6 +56,18 @@ const Index = () => {
   const handleViewDetails = (property: any) => {
     setSelectedProperty(property);
     setIsModalOpen(true);
+  };
+
+  const handleListProperty = () => {
+    if (!isAuthenticated()) {
+      setShowAuthModal(true);
+      return;
+    }
+    setShowListPropertyForm(true);
+  };
+
+  const handleAuthSuccess = () => {
+    setShowListPropertyForm(true);
   };
 
   const stats = [
@@ -116,6 +136,19 @@ const Index = () => {
                 </Button>
               </div>
             </div>
+
+            {/* List Property Button */}
+            <div className="mt-8">
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="bg-white/10 border-white/30 text-white hover:bg-white/20"
+                onClick={handleListProperty}
+              >
+                <Plus className="h-5 w-5 mr-2" />
+                List Your Property
+              </Button>
+            </div>
           </div>
         </div>
       </section>
@@ -174,7 +207,7 @@ const Index = () => {
                 <div className="text-center py-12">
                   <div className="text-gray-500 text-lg mb-4">No properties match your current filters</div>
                   <Button variant="outline" onClick={() => setFilters({
-                    priceRange: [0, 2000000],
+                    priceRange: [0, 5000000],
                     propertyType: 'all',
                     bedrooms: 'any',
                     bathrooms: 'any',
@@ -241,7 +274,7 @@ const Index = () => {
         </div>
       </footer>
 
-      {/* Property Modal */}
+      {/* Modals */}
       <PropertyModal
         property={selectedProperty}
         isOpen={isModalOpen}
@@ -249,6 +282,17 @@ const Index = () => {
           setIsModalOpen(false);
           setSelectedProperty(null);
         }}
+      />
+
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onAuthSuccess={handleAuthSuccess}
+      />
+
+      <ListPropertyForm
+        isOpen={showListPropertyForm}
+        onClose={() => setShowListPropertyForm(false)}
       />
     </div>
   );
