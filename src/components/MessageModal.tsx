@@ -7,8 +7,7 @@ import { Input } from '@/components/ui/input';
 import { MessageCircle, Send } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-
-const OWNER_PHONE = '9942408260';
+import { OWNER_PHONE, openWhatsApp } from '@/lib/whatsapp';
 
 interface MessageModalProps {
   isOpen: boolean;
@@ -40,12 +39,10 @@ const MessageModal = ({ isOpen, onClose, propertyTitle }: MessageModalProps) => 
       });
     }
 
-    const text = encodeURIComponent(
-      `New inquiry from Nearby Estate Service:\n\nName: ${senderName}\nPhone: ${senderPhone}\n\nProperty: ${propertyTitle || 'General Inquiry'}\n\nMessage: ${message}`
-    );
-    window.open(`https://wa.me/91${OWNER_PHONE}?text=${text}`, '_blank');
+    const text = `New inquiry from Nearby Estate Service:\n\nName: ${senderName}\nPhone: ${senderPhone}\n\nProperty: ${propertyTitle || 'General Inquiry'}\n\nMessage: ${message}`;
+    openWhatsApp(text);
 
-    toast({ title: 'Message Sent!', description: 'Redirecting to WhatsApp…' });
+    toast({ title: 'Opening WhatsApp…', description: 'Continuing in a new tab.' });
     setMessage(''); setSenderName(''); setSenderPhone('');
     onClose();
   };
@@ -81,7 +78,7 @@ const MessageModal = ({ isOpen, onClose, propertyTitle }: MessageModalProps) => 
           </div>
 
           <div className="text-sm text-gray-600 bg-blue-50 p-3 rounded-lg">
-            📱 Message will be sent to: +91 {OWNER_PHONE} via WhatsApp
+            📱 Message will be sent to: +{OWNER_PHONE} via WhatsApp
           </div>
 
           <div className="flex gap-3">
