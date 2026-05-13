@@ -10,8 +10,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Upload, X, Home } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-
-const OWNER_PHONE = '9942408260';
+import { openWhatsApp } from '@/lib/whatsapp';
 
 interface ListPropertyFormProps {
   isOpen: boolean;
@@ -105,7 +104,7 @@ const ListPropertyForm = ({ isOpen, onClose }: ListPropertyFormProps) => {
       `Sqft: ${formData.sqft}\nLocation: ${formData.location}\nAddress: ${formData.address}\n` +
       `Features: ${formData.features}\nDescription: ${formData.description}\n` +
       `Images uploaded: ${images.length}\nListed by: ${user.email}`;
-    window.open(`https://wa.me/91${OWNER_PHONE}?text=${encodeURIComponent(summary)}`, '_blank');
+    openWhatsApp(summary);
 
     toast({ title: 'Property Listed Successfully!', description: 'Details sent to the owner.' });
 
