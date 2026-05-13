@@ -14,7 +14,120 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      inquiries: {
+        Row: {
+          created_at: string
+          id: string
+          inquiry_type: string
+          message: string | null
+          offer_price: string | null
+          property_title: string | null
+          sender_name: string | null
+          sender_phone: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          inquiry_type: string
+          message?: string | null
+          offer_price?: string | null
+          property_title?: string | null
+          sender_name?: string | null
+          sender_phone?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          inquiry_type?: string
+          message?: string | null
+          offer_price?: string | null
+          property_title?: string | null
+          sender_name?: string | null
+          sender_phone?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          full_name?: string | null
+          id: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      property_listings: {
+        Row: {
+          address: string
+          bathrooms: number
+          bedrooms: number
+          created_at: string
+          description: string | null
+          features: string | null
+          id: string
+          images: string[]
+          location: string
+          price: string
+          sqft: number
+          status: string
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          address: string
+          bathrooms?: number
+          bedrooms?: number
+          created_at?: string
+          description?: string | null
+          features?: string | null
+          id?: string
+          images?: string[]
+          location: string
+          price: string
+          sqft?: number
+          status: string
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          address?: string
+          bathrooms?: number
+          bedrooms?: number
+          created_at?: string
+          description?: string | null
+          features?: string | null
+          id?: string
+          images?: string[]
+          location?: string
+          price?: string
+          sqft?: number
+          status?: string
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
