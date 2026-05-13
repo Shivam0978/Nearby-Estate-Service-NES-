@@ -7,8 +7,7 @@ import { Input } from '@/components/ui/input';
 import { MessageCircle, Send } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-
-const OWNER_PHONE = '9942408260';
+import { OWNER_PHONE, openWhatsApp } from '@/lib/whatsapp';
 
 interface MessageModalProps {
   isOpen: boolean;
