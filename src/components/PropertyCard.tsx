@@ -34,8 +34,9 @@ const PropertyCard = ({ property, onViewDetails }: PropertyCardProps) => {
 
   const views = ['front', 'back', 'side', 'top'];
 
-  const isAuthenticated = () => {
-    return localStorage.getItem('isAuthenticated') === 'true';
+  const isAuthenticated = async () => {
+    const { data } = await (await import('@/integrations/supabase/client')).supabase.auth.getSession();
+    return !!data.session;
   };
 
   const handleViewChange = () => {
@@ -65,15 +66,14 @@ const PropertyCard = ({ property, onViewDetails }: PropertyCardProps) => {
     });
   };
 
-  const handleCheckout = () => {
-    if (!isAuthenticated()) {
+  const handleCheckout = async () => {
+    if (!(await isAuthenticated())) {
       setShowAuthModal(true);
       return;
     }
-    
     toast({
       title: "Meeting Request Sent",
-      description: `A request to meet and view ${property.title} has been sent to the owner. They will contact you soon.`,
+      description: `A request to meet and view ${property.title} has been sent to the owner.`,
     });
   };
 
