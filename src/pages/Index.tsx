@@ -1,5 +1,6 @@
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
 import PropertyCard from '@/components/PropertyCard';
 import FilterSidebar from '@/components/FilterSidebar';
@@ -23,9 +24,13 @@ const Index = () => {
     features: []
   });
 
-  const isAuthenticated = () => {
-    return localStorage.getItem('isAuthenticated') === 'true';
-  };
+  const [authed, setAuthed] = useState(false);
+  useEffect(() => {
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => setAuthed(!!session));
+    supabase.auth.getSession().then(({ data }) => setAuthed(!!data.session));
+    return () => sub.subscription.unsubscribe();
+  }, []);
+  const isAuthenticated = () => authed;
 
   const filteredProperties = useMemo(() => {
     return sampleProperties.filter(property => {

@@ -1,75 +1,107 @@
-
-import React, { useState } from 'react';
-import { Search, Menu, MapPin, User } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Menu, User, ShoppingBag, KeyRound, Tag, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { supabase } from '@/integrations/supabase/client';
+import AuthModal from './AuthModal';
+import { useToast } from '@/hooks/use-toast';
+
+const navItems = [
+  { label: 'Buy', icon: ShoppingBag },
+  { label: 'Rent', icon: KeyRound },
+  { label: 'Sell', icon: Tag },
+];
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showAuth, setShowAuth] = useState(false);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
+      setUserEmail(session?.user?.email ?? null);
+    });
+    supabase.auth.getSession().then(({ data }) => setUserEmail(data.session?.user?.email ?? null));
+    return () => sub.subscription.unsubscribe();
+  }, []);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    toast({ title: 'Signed out' });
+  };
 
   return (
     <header className="bg-white shadow-sm border-b sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <h1 className="text-2xl font-bold text-blue-600">EstateHub</h1>
-            </div>
-          </div>
+        <div className="flex items-center justify-between h-20">
+          {/* Animated brand */}
+          <a href="/" className="group relative overflow-hidden">
+            <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent transition-all duration-500 group-hover:tracking-wide">
+              Nearby Estate Service
+            </h1>
+            <span className="block h-0.5 w-0 group-hover:w-full bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-500" />
+          </a>
 
-          {/* Search Bar */}
-          <div className="flex-1 max-w-lg mx-8">
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-gray-400" />
+          {/* Desktop nav with iconic icons */}
+          <nav className="hidden md:flex items-center gap-8">
+            {navItems.map(({ label, icon: Icon }) => (
+              <a
+                key={label}
+                href="#"
+                className="group flex flex-col items-center text-gray-700 hover:text-blue-600 transition-colors"
+              >
+                <Icon className="h-6 w-6 group-hover:scale-110 transition-transform" />
+                <span className="text-xs font-semibold mt-1">{label}</span>
+              </a>
+            ))}
+
+            {userEmail ? (
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-600 max-w-[140px] truncate">{userEmail}</span>
+                <Button variant="outline" size="sm" onClick={handleSignOut}>
+                  <LogOut className="h-4 w-4 mr-1" /> Sign Out
+                </Button>
               </div>
-              <Input
-                type="text"
-                placeholder="Search by city, neighborhood, or address..."
-                className="pl-10 pr-4 py-2 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
-          </div>
-
-          {/* Navigation */}
-          <nav className="hidden md:flex items-center space-x-6">
-            <a href="#" className="text-gray-700 hover:text-blue-600 font-medium">Buy</a>
-            <a href="#" className="text-gray-700 hover:text-blue-600 font-medium">Rent</a>
-            <a href="#" className="text-gray-700 hover:text-blue-600 font-medium">Sell</a>
-            <Button variant="outline" size="sm" className="flex items-center">
-              <User className="h-4 w-4 mr-2" />
-              Sign In
-            </Button>
+            ) : (
+              <Button variant="outline" size="sm" onClick={() => setShowAuth(true)}>
+                <User className="h-4 w-4 mr-2" /> Sign In
+              </Button>
+            )}
           </nav>
 
-          {/* Mobile menu button */}
           <div className="md:hidden">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
+            <Button variant="ghost" size="sm" onClick={() => setIsMenuOpen(!isMenuOpen)}>
               <Menu className="h-6 w-6" />
             </Button>
           </div>
         </div>
 
-        {/* Mobile menu */}
         {isMenuOpen && (
           <div className="md:hidden border-t border-gray-200 py-4">
-            <div className="flex flex-col space-y-3">
-              <a href="#" className="text-gray-700 hover:text-blue-600 font-medium">Buy</a>
-              <a href="#" className="text-gray-700 hover:text-blue-600 font-medium">Rent</a>
-              <a href="#" className="text-gray-700 hover:text-blue-600 font-medium">Sell</a>
-              <Button variant="outline" size="sm" className="flex items-center justify-center mt-2">
-                <User className="h-4 w-4 mr-2" />
-                Sign In
-              </Button>
+            <div className="flex justify-around">
+              {navItems.map(({ label, icon: Icon }) => (
+                <a key={label} href="#" className="flex flex-col items-center text-gray-700">
+                  <Icon className="h-6 w-6" />
+                  <span className="text-xs font-semibold mt-1">{label}</span>
+                </a>
+              ))}
+            </div>
+            <div className="mt-4 px-4">
+              {userEmail ? (
+                <Button variant="outline" size="sm" className="w-full" onClick={handleSignOut}>
+                  <LogOut className="h-4 w-4 mr-2" /> Sign Out
+                </Button>
+              ) : (
+                <Button variant="outline" size="sm" className="w-full" onClick={() => setShowAuth(true)}>
+                  <User className="h-4 w-4 mr-2" /> Sign In
+                </Button>
+              )}
             </div>
           </div>
         )}
       </div>
+
+      <AuthModal isOpen={showAuth} onClose={() => setShowAuth(false)} onAuthSuccess={() => setShowAuth(false)} />
     </header>
   );
 };

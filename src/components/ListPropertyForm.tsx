@@ -9,6 +9,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent } from '@/components/ui/card';
 import { Upload, X, Home } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+
+const OWNER_PHONE = '9942408260';
 
 interface ListPropertyFormProps {
   isOpen: boolean;
@@ -60,26 +63,54 @@ const ListPropertyForm = ({ isOpen, onClose }: ListPropertyFormProps) => {
     setImages(prev => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (images.length < 4) {
-      toast({
-        title: "Insufficient Images",
-        description: "Please upload at least 4 images showing different angles of your property.",
-        variant: "destructive",
-      });
+      toast({ title: 'Insufficient Images', description: 'Please upload at least 4 images.', variant: 'destructive' });
       return;
     }
 
-    toast({
-      title: "Property Listed Successfully!",
-      description: "Your property has been submitted for review and will be live within 24 hours.",
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      toast({ title: 'Sign in required', variant: 'destructive' });
+      return;
+    }
+
+    const { error } = await supabase.from('property_listings').insert({
+      user_id: user.id,
+      title: formData.title,
+      type: formData.type,
+      status: formData.status,
+      price: formData.price,
+      bedrooms: parseInt(formData.bedrooms) || 0,
+      bathrooms: parseFloat(formData.bathrooms) || 0,
+      sqft: parseInt(formData.sqft) || 0,
+      location: formData.location,
+      address: formData.address,
+      features: formData.features,
+      description: formData.description,
+      images,
     });
-    
-    // Reset form
+
+    if (error) {
+      toast({ title: 'Failed to list property', description: error.message, variant: 'destructive' });
+      return;
+    }
+
+    // Send full listing details to owner via WhatsApp
+    const summary = `New Property Listed on Nearby Estate Service:\n\n` +
+      `Title: ${formData.title}\nType: ${formData.type}\nListing: ${formData.status}\n` +
+      `Price: ${formData.price}\nBedrooms: ${formData.bedrooms}\nBathrooms: ${formData.bathrooms}\n` +
+      `Sqft: ${formData.sqft}\nLocation: ${formData.location}\nAddress: ${formData.address}\n` +
+      `Features: ${formData.features}\nDescription: ${formData.description}\n` +
+      `Images uploaded: ${images.length}\nListed by: ${user.email}`;
+    window.open(`https://wa.me/91${OWNER_PHONE}?text=${encodeURIComponent(summary)}`, '_blank');
+
+    toast({ title: 'Property Listed Successfully!', description: 'Details sent to the owner.' });
+
     setFormData({
-      title: '', type: '', status: '', price: '', bedrooms: '', 
+      title: '', type: '', status: '', price: '', bedrooms: '',
       bathrooms: '', sqft: '', location: '', address: '', features: '', description: ''
     });
     setImages([]);
