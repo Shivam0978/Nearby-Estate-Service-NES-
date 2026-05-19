@@ -56,10 +56,12 @@ export type Database = {
           avatar_url: string | null
           bio: string | null
           buy_count: number
+          city: string | null
           created_at: string
           date_of_birth: string | null
           full_name: string | null
           id: string
+          mobile_number: string | null
           phone: string | null
           rent_count: number
           sell_count: number
@@ -70,10 +72,12 @@ export type Database = {
           avatar_url?: string | null
           bio?: string | null
           buy_count?: number
+          city?: string | null
           created_at?: string
           date_of_birth?: string | null
           full_name?: string | null
           id: string
+          mobile_number?: string | null
           phone?: string | null
           rent_count?: number
           sell_count?: number
@@ -84,10 +88,12 @@ export type Database = {
           avatar_url?: string | null
           bio?: string | null
           buy_count?: number
+          city?: string | null
           created_at?: string
           date_of_birth?: string | null
           full_name?: string | null
           id?: string
+          mobile_number?: string | null
           phone?: string | null
           rent_count?: number
           sell_count?: number
