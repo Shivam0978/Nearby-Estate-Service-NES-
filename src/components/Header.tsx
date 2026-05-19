@@ -34,8 +34,8 @@ const Header = () => {
 
   const navItems = [
     { label: 'Buy', icon: ShoppingBag, onClick: () => navigate('/buy') },
-    { label: 'Rent', icon: KeyRound, onClick: () => navigate('/') },
-    { label: 'Sell', icon: Tag, onClick: () => navigate('/') },
+    { label: 'Rent', icon: KeyRound, onClick: () => navigate('/rent') },
+    { label: 'Sell', icon: Tag, onClick: () => navigate('/sell') },
   ];
 
   const handleSignOut = async () => {
